@@ -49,6 +49,37 @@ class DataSorter implements ISorter
         return "Время выполнения: " . $hours . ':' . ($minutes % 60) . ':' . ($seconds % 60) . (($milliseconds === 0) ? '' : '.' . rtrim($milliseconds % 1000, '0'));
     }
 
+    public function quicksort($array): array
+    {
+        set_time_limit(3600);
+        ini_set('memory_limit', $this->ramSize . "M");
+
+        $leftArr = $rightArr = [];
+
+        $pivotKey = key($array);
+        $pivot = array_shift($array);
+
+        foreach ($array as $val) {
+            $this->iterationCount++;
+            if ($val <= $pivot) {
+                $leftArr[] = $val;
+            } else {
+                $rightArr[] = $val;
+            }
+        }
+        return array_merge($this->quicksort($leftArr), [$pivotKey => $pivot], $this->quicksort($rightArr));
+    }
+
+    public function quicksortRun()
+    {
+        $timeStart = microtime(true);
+        $this->sortedData = $this->quicksort($this->getUnsortedArray());
+        $timeEnd = microtime(true);
+
+        $this->time = "Время: " . $this->executionTime(($timeEnd - $timeStart));
+
+    }
+
     public function mergesort($array): array
     {
         set_time_limit(3600);
@@ -96,37 +127,6 @@ class DataSorter implements ISorter
     {
         $timeStart = microtime(true);
         $this->sortedData = $this->mergesort($this->getUnsortedArray());
-        $timeEnd = microtime(true);
-
-        $this->time = "Время: " . $this->executionTime(($timeEnd - $timeStart));
-
-    }
-
-    public function quicksort($array): array
-    {
-        set_time_limit(3600);
-        ini_set('memory_limit', $this->ramSize . "M");
-
-        $leftArr = $rightArr = [];
-
-        $pivotKey = key($array);
-        $pivot = array_shift($array);
-
-        foreach ($array as $val) {
-            $this->iterationCount++;
-            if ($val <= $pivot) {
-                $leftArr[] = $val;
-            } else {
-                $rightArr[] = $val;
-            }
-        }
-        return array_merge($this->quicksort($leftArr), [$pivotKey => $pivot], $this->quicksort($rightArr));
-    }
-
-    public function quicksortRun()
-    {
-        $timeStart = microtime(true);
-        $this->sortedData = $this->quicksort($this->getUnsortedArray());
         $timeEnd = microtime(true);
 
         $this->time = "Время: " . $this->executionTime(($timeEnd - $timeStart));
