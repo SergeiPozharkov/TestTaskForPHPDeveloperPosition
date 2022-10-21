@@ -35,11 +35,11 @@ class DataSorter implements ISorter
         return $data;
     }
 
-    public function memoryUsage(): string
+    public function memoryUsage()
     {
-        $mem_usage = memory_get_usage();
+        $mem_usage = memory_get_usage(true);
 
-        return "Использовано памяти: " . round($mem_usage / 1024 / 1024) . "MB";
+        echo round($mem_usage / 1048576) . "MB";
     }
 
     public function executionTime($seconds_input): string
@@ -53,6 +53,7 @@ class DataSorter implements ISorter
     {
         set_time_limit(3600);
         ini_set('memory_limit', $this->ramSize . "M");
+//        ini_set('memory_limit', "-1");
 
         $leftArr = $rightArr = [];
 
@@ -84,6 +85,7 @@ class DataSorter implements ISorter
     {
         set_time_limit(3600);
         ini_set('memory_limit', $this->ramSize . "M");
+//        ini_set('memory_limit','-1');
 
         $mid = count($array) / 2;
         $left = array_slice($array, 0, $mid);
@@ -97,6 +99,9 @@ class DataSorter implements ISorter
 
     private function merge($left, $right): array
     {
+        $leftArrayCount = 0;
+        $rightArrayCount = 0;
+
         $result = [];
         $leftIndex = 0;
         $rightIndex = 0;
@@ -106,35 +111,43 @@ class DataSorter implements ISorter
             if ($left[$leftIndex] > $right[$rightIndex]) {
                 $result[] = $right[$rightIndex];
                 $rightIndex++;
+                $rightArrayCount++;
             } else {
                 $result[] = $left[$leftIndex];
                 $leftIndex++;
+                $leftArrayCount++;
             }
         }
         while ($leftIndex < count($left)) {
             $result[] = $left[$leftIndex];
             $leftIndex++;
+            $leftArrayCount++;
         }
 
         while ($rightIndex < count($right)) {
             $result[] = $right[$rightIndex];
             $rightIndex++;
+            $rightArrayCount++;
         }
+        $this->iterationCount = $leftArrayCount + $rightArrayCount;
         return $result;
     }
 
     public function mergesortRun()
     {
+//        $this->memoryUsage();
         $timeStart = microtime(true);
         $this->sortedData = $this->mergesort($this->getUnsortedArray());
         $timeEnd = microtime(true);
+        $this->memoryUsage();
 
         $this->time = "Время: " . $this->executionTime(($timeEnd - $timeStart));
+
 
     }
 
     public function writeSortedData()
     {
-        file_put_contents($this->path, implode(' ', $this->sortedData));
+        file_put_contents($this->path, implode(', ', $this->sortedData));
     }
 }

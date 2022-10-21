@@ -18,7 +18,8 @@ if ($validator->validateForm() == true) {
 
     $dataSorter = new DataSorter($fileGenerator->filePath, $_POST['ramSize']);
 
-    $dataSorter->quicksortRun();
+//    $dataSorter->memoryUsage();
+    $dataSorter->mergesortRun();
     $dataSorter->writeSortedData();
 
     $result = [];

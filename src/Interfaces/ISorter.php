@@ -5,7 +5,7 @@ namespace App\Interfaces;
 interface ISorter
 {
     public function getUnsortedArray(): array;
-    public function memoryUsage(): string;
+    public function memoryUsage();
     public function executionTime($seconds_input): string;
 
     public function mergesort($array): array;
