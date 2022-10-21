@@ -1,0 +1,21 @@
+{
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Pozharkov Sergey",
+      "email": "pozharkov.sergej@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "App\\": "src"
+    }
+  },
+  "scripts": {
+    "web": "php -S localhost:8000 -t public/"
+  },
+  "config": {
+    "process-timeout": 0
+  }
+}
