@@ -39,7 +39,7 @@ class DataSorter implements ISorter
     {
         $mem_usage = memory_get_usage(true);
 
-        echo round($mem_usage / 1048576) . "MB";
+        return round($mem_usage / 1048576) . "MB";
     }
 
     public function executionTime($seconds_input): string
